@@ -245,7 +245,7 @@ def agent_selector_ui(agents: List[Dict[str, Any]]) -> Dict[str, Any]:
         st.session_state["selected_agent_id"] = selected_id
         st.session_state["llm_provider"] = selected_agent.get("default_provider", "Gemini")
         st.session_state["llm_model_id"] = selected_agent.get("default_model", "gemini-3-flash-preview")
-        st.session_state["llm_max_tokens"] = selected_agent.get("default_max_tokens", 4096)
+        st.session_state["llm_max_tokens"] = selected_agent.get("default_max_tokens", 8096)
         st.session_state["llm_temperature"] = selected_agent.get("default_temperature", 0.3)
         st.session_state["llm_system_prompt"] = selected_agent.get(
             "system_prompt_zh",
@@ -357,8 +357,8 @@ def render_llm_controls():
     )
 
     max_tokens = st.sidebar.slider(
-        t("max_tokens"), min_value=256, max_value=8192,
-        value=int(st.session_state.get("llm_max_tokens", 4096)), step=256,
+        t("max_tokens"), min_value=256, max_value=12192,
+        value=int(st.session_state.get("llm_max_tokens", 8096)), step=256,
         key="llm_max_tokens",
     )
     temperature = st.sidebar.slider(
