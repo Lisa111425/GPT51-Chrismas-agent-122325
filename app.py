@@ -244,7 +244,7 @@ def agent_selector_ui(agents: List[Dict[str, Any]]) -> Dict[str, Any]:
     if st.session_state.get("selected_agent_id") != selected_id:
         st.session_state["selected_agent_id"] = selected_id
         st.session_state["llm_provider"] = selected_agent.get("default_provider", "Gemini")
-        st.session_state["llm_model_id"] = selected_agent.get("default_model", "gemini-3-flash")
+        st.session_state["llm_model_id"] = selected_agent.get("default_model", "gemini-3-flash-preview")
         st.session_state["llm_max_tokens"] = selected_agent.get("default_max_tokens", 4096)
         st.session_state["llm_temperature"] = selected_agent.get("default_temperature", 0.3)
         st.session_state["llm_system_prompt"] = selected_agent.get(
@@ -321,7 +321,7 @@ MODEL_CATALOG = {
     ],
     "Gemini": [
         {"id": "gemini-2.5-flash", "label": "Gemini 2.5 Flash"},
-        {"id": "gemini-3-flash", "label": "Gemini 3 Flash"},
+        {"id": "gemini-3-flash-preview", "label": "Gemini 3 Flash"},
     ],
     "Anthropic": [
         {"id": "claude-3.5-sonnet", "label": "Claude 3.5 Sonnet"},
@@ -381,7 +381,7 @@ def render_llm_controls():
 def get_llm_config():
     return (
         st.session_state.get("llm_provider", "Gemini"),
-        st.session_state.get("llm_model_id", "gemini-3-flash"),
+        st.session_state.get("llm_model_id", "gemini-3-flash-preview"),
         int(st.session_state.get("llm_max_tokens", 4096)),
         float(st.session_state.get("llm_temperature", 0.3)),
         st.session_state.get("llm_system_prompt", "你是一位 FDA 法規合規與策略分析專家，請使用繁體中文回答。"),
@@ -589,7 +589,7 @@ def run_llm_ocr(pdf_bytes: bytes, pages: List[int], model_choice: str) -> str:
         img.save(buffered, format="PNG")
         img_bytes = buffered.getvalue()
 
-        if model_choice in ["gemini-3-flash", "gemini-2.5-flash"]:
+        if model_choice in ["gemini-3-flash-preview", "gemini-2.5-flash"]:
             api_key = st.session_state.get("gemini_api_key") or os.getenv("GEMINI_API_KEY")
             if not api_key:
                 st.error("Gemini API key is required for LLM OCR.")
@@ -701,7 +701,7 @@ def build_ocr_summary_prompt(ocr_text: str, lang: str) -> str:
 # =========================
 
 LIMITED_QA_MODELS = {
-    "Gemini 3 Flash": ("Gemini", "gemini-3-flash"),
+    "Gemini 3 Flash": ("Gemini", "gemini-3-flash-preview"),
     "Gemini 2.5 Flash": ("Gemini", "gemini-2.5-flash"),
     "GPT‑4o mini": ("OpenAI", "gpt-4o-mini"),
 }
@@ -792,7 +792,7 @@ def tab_ocr_pdf_intelligence():
         else:
             llm_ocr_model = st.selectbox(
                 "選擇 LLM 模型用於 OCR",
-                ["gemini-3-flash", "gemini-2.5-flash", "gpt-4o-mini"],
+                ["gemini-3-flash-preview", "gemini-2.5-flash", "gpt-4o-mini"],
                 index=0,
             )
             if st.button("執行 LLM OCR"):
